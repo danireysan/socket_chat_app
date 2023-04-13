@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socket_chat_app/pages/loading_page.dart';
+import 'package:socket_chat_app/routes/routes.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,10 +11,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Socket Chat App',
       debugShowCheckedModeBanner: false,
       initialRoute: LoadingPage.routeName,
+      routes: appRoutes,
     );
   }
 }
