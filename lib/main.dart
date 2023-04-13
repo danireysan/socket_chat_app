@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socket_chat_app/pages/loading_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -12,11 +13,7 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Socket Chat App',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+      initialRoute: LoadingPage.routeName,
     );
   }
 }
