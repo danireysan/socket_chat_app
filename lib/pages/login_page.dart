@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socket_chat_app/widgets/custom_textfield.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = '/login';
@@ -56,37 +57,13 @@ class _FormWidget extends StatelessWidget {
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(
-              bottom: 5,
-              top: 5,
-              left: 5,
-              right: 20,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  offset: Offset(0, 5),
-                  blurRadius: 5,
-                ),
-              ],
-            ),
-            child: const TextField(
-              autocorrect: true,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.mail_outline),
-                focusedBorder: InputBorder.none,
-                border: InputBorder.none,
-                hintText: 'Email',
-              ),
-            ),
+        children: const [
+          CustomTextField(
+            prefixIcon: Icons.mail_outline,
+            hintText: 'Email',
+            keyboardType: TextInputType.emailAddress,
+            controller: null,
           ),
-          // ElevatedButton(onPressed: () {}, child: const Text('Ingresar')),
         ],
       ),
     );
