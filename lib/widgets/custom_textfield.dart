@@ -5,14 +5,16 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.hintText,
     required this.prefixIcon,
-    required this.keyboardType,
     required this.controller,
+    this.keyboardType = TextInputType.text,
+    this.isPassword = false,
   });
 
   final String hintText;
   final IconData prefixIcon;
   final TextInputType keyboardType;
   final TextEditingController? controller;
+  final bool isPassword;
   @override
   Widget build(BuildContext context) {
     return Container(
