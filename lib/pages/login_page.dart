@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:socket_chat_app/widgets/custom_textfield.dart';
 
+import '../widgets/label_widget.dart';
+import '../widgets/logo_widget.dart';
+
 class LoginPage extends StatelessWidget {
   static const routeName = '/login';
   const LoginPage({super.key});
@@ -14,34 +17,13 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: const [
-            _LogoWidget(),
+            LogoWidget(),
             _FormWidget(),
-            _LabelsWidget(),
+            LabelsWidget(),
             Text(
               'Terminos y condiciones de uso',
               style: TextStyle(fontWeight: FontWeight.w200),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _LogoWidget extends StatelessWidget {
-  const _LogoWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.only(top: 50),
-        width: 170,
-        child: Column(
-          children: const [
-            Image(image: AssetImage('assets/tag-logo.png')),
-            SizedBox(height: 20),
-            Text('Messenger', style: TextStyle(fontSize: 30))
           ],
         ),
       ),
@@ -79,37 +61,12 @@ class _FormWidgetState extends State<_FormWidget> {
             controller: passwordCtrl,
             isPassword: true,
           ),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Ingresar'),
+          ),
         ],
       ),
-    );
-  }
-}
-
-class _LabelsWidget extends StatelessWidget {
-  const _LabelsWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text(
-          '¿No tienes cuenta?',
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 15,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          'Crea una ahora!',
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.blue[600],
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
     );
   }
 }

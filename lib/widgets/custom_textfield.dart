@@ -40,6 +40,7 @@ class CustomTextField extends StatelessWidget {
         autocorrect: true,
         keyboardType: keyboardType,
         controller: controller,
+        obscureText: isPassword,
         decoration: InputDecoration(
           prefixIcon: Icon(prefixIcon),
           focusedBorder: InputBorder.none,
