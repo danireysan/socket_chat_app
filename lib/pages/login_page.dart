@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socket_chat_app/pages/register_page.dart';
 import 'package:socket_chat_app/widgets/custom_textfield.dart';
 
 import '../widgets/blue_button_widget.dart';
@@ -21,9 +22,13 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                LogoWidget(),
+                LogoWidget(title: 'Messenger'),
                 _FormWidget(),
-                LabelsWidget(),
+                LabelsWidget(
+                  route: RegisterPage.routeName,
+                  title: '¿No tienes una cuenta?',
+                  subtitle: 'Crea una ahora!',
+                ),
                 Text(
                   'Terminos y condiciones de uso',
                   style: TextStyle(fontWeight: FontWeight.w200),
