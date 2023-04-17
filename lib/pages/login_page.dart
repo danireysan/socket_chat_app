@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:socket_chat_app/widgets/custom_textfield.dart';
 
+import '../widgets/blue_button_widget.dart';
 import '../widgets/label_widget.dart';
 import '../widgets/logo_widget.dart';
 
@@ -11,20 +12,25 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xffF2F2F2),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            LogoWidget(),
-            _FormWidget(),
-            LabelsWidget(),
-            Text(
-              'Terminos y condiciones de uso',
-              style: TextStyle(fontWeight: FontWeight.w200),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: SafeArea(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * .9,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                LogoWidget(),
+                _FormWidget(),
+                LabelsWidget(),
+                Text(
+                  'Terminos y condiciones de uso',
+                  style: TextStyle(fontWeight: FontWeight.w200),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -61,9 +67,9 @@ class _FormWidgetState extends State<_FormWidget> {
             controller: passwordCtrl,
             isPassword: true,
           ),
-          ElevatedButton(
+          BlueButton(
+            text: "Ingresar",
             onPressed: () {},
-            child: const Text('Ingresar'),
           ),
         ],
       ),
