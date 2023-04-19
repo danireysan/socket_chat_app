@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:socket_chat_app/models/user_model.dart';
 
 class UsersPage extends StatefulWidget {
@@ -10,6 +11,9 @@ class UsersPage extends StatefulWidget {
 }
 
 class _UsersPageState extends State<UsersPage> {
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
   final users = [
     UserModel(uid: '1', nombre: 'Maria', email: "maria@mail.com", online: true),
     UserModel(
@@ -28,51 +32,82 @@ class _UsersPageState extends State<UsersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Mi nombre',
-            style: TextStyle(color: Colors.black54),
-          ),
-          elevation: 1,
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.exit_to_app,
-              color: Colors.black87,
-            ),
-          ),
-          actions: [
-            Container(
-              margin: const EdgeInsets.only(right: 10),
-              child: Icon(
-                Icons.check_circle,
-                color: Colors.blue[400],
-              ),
-            )
-          ],
+      appBar: AppBar(
+        title: const Text(
+          'Mi nombre',
+          style: TextStyle(color: Colors.black54),
         ),
-        body: ListView.separated(
-          physics: const BouncingScrollPhysics(),
-          itemCount: users.length,
-          itemBuilder: (context, index) {
-            final user = users[index];
-            return ListTile(
-              title: Text(user.nombre!),
-              leading: CircleAvatar(
-                child: Text(user.nombre!.substring(0, 2)),
-              ),
-              trailing: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  color: user.online! ? Colors.green : Colors.red,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            );
-          },
-          separatorBuilder: (context, index) => const Divider(),
-        ));
+        elevation: 1,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.exit_to_app,
+            color: Colors.black87,
+          ),
+        ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: Icon(
+              Icons.check_circle,
+              color: Colors.blue[400],
+            ),
+          )
+        ],
+      ),
+      body: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        header: WaterDropHeader(
+          complete: Icon(Icons.check, color: Colors.blue[400]),
+          waterDropColor: Colors.blue[400]!,
+        ),
+        onRefresh: _loadUsers,
+        child: _usersListView(),
+      ),
+    );
+  }
+
+  Future<void> _loadUsers() async {
+    await Future.delayed(const Duration(milliseconds: 1000));
+    _refreshController.refreshCompleted();
+  }
+
+  ListView _usersListView() {
+    return ListView.separated(
+      physics: const BouncingScrollPhysics(),
+      itemCount: users.length,
+      itemBuilder: (context, index) => _CustomTile(user: users[index]),
+      separatorBuilder: (context, index) => const Divider(),
+    );
+  }
+}
+
+class _CustomTile extends StatelessWidget {
+  const _CustomTile({
+    required this.user,
+  });
+
+  final UserModel user;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(user.nombre!),
+      leading: CircleAvatar(
+        backgroundColor: Colors.blue[100],
+        child: Text(user.nombre!.substring(0, 2)),
+      ),
+      subtitle: Text(user.email!),
+      trailing: Container(
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+          color: user.online! ? Colors.green : Colors.red,
+          shape: BoxShape.circle,
+        ),
+      ),
+    );
   }
 }
