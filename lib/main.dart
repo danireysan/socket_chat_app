@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socket_chat_app/pages/login_page.dart';
+import 'package:socket_chat_app/pages/users_page.dart';
 import 'package:socket_chat_app/routes/routes.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Socket Chat App',
       debugShowCheckedModeBanner: false,
-      initialRoute: LoginPage.routeName,
+      initialRoute: UsersPage.routeName,
       routes: appRoutes,
     );
   }
