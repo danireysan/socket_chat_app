@@ -8,6 +8,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xffF2F2F2),
       body: SafeArea(
         child: Column(
@@ -48,21 +49,35 @@ class _LogoWidget extends StatelessWidget {
   }
 }
 
-class _FormWidget extends StatelessWidget {
+class _FormWidget extends StatefulWidget {
   const _FormWidget();
 
+  @override
+  State<_FormWidget> createState() => _FormWidgetState();
+}
+
+class _FormWidgetState extends State<_FormWidget> {
+  final emailCtrl = TextEditingController();
+  final passwordCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
-        children: const [
+        children: [
           CustomTextField(
             prefixIcon: Icons.mail_outline,
-            hintText: 'Email',
+            hintText: 'Correo',
             keyboardType: TextInputType.emailAddress,
-            controller: null,
+            controller: emailCtrl,
+          ),
+          CustomTextField(
+            prefixIcon: Icons.lock_outline,
+            hintText: 'Contraseña',
+            keyboardType: TextInputType.text,
+            controller: passwordCtrl,
+            isPassword: true,
           ),
         ],
       ),

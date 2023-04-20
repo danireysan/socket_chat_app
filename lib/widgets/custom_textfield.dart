@@ -39,6 +39,7 @@ class CustomTextField extends StatelessWidget {
       child: TextField(
         autocorrect: true,
         keyboardType: keyboardType,
+        controller: controller,
         decoration: InputDecoration(
           prefixIcon: Icon(prefixIcon),
           focusedBorder: InputBorder.none,
