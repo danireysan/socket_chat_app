@@ -12,21 +12,13 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 
   bool _isWriting = false;
 
-  List<ChatMessage> _messages = [
-    ChatMessage(text: 'Hola mundo', uid: '123'),
-    ChatMessage(text: 'Hola mundo', uid: '123'),
-    ChatMessage(text: 'Hola mundo', uid: '123'),
-    ChatMessage(text: 'Hola mundo', uid: '123'),
-    ChatMessage(text: 'Hola mundo', uid: '123'),
-    ChatMessage(text: 'Hola mundo', uid: '123'),
-    ChatMessage(text: 'Hola mundo', uid: '123'),
-  ];
+  List<ChatMessage> _messages = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,8 +118,28 @@ class _ChatPageState extends State<ChatPage> {
   _handleSubmit(String text) {
     _textController.clear();
     _focusNode.requestFocus();
+
+    final newMessage = ChatMessage(
+      text: text,
+      uid: '123',
+      animationController: AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 200),
+      ),
+    );
+    _messages.insert(0, newMessage);
+    newMessage.animationController.forward();
     setState(() {
       _isWriting = false;
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO offsocket
+    for (ChatMessage message in _messages) {
+      message.animationController.dispose();
+    }
+    super.dispose();
   }
 }
