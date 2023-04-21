@@ -1,9 +1,32 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class ChatPage extends StatelessWidget {
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:socket_chat_app/widgets/chat_message.dart';
+
+class ChatPage extends StatefulWidget {
   static const routeName = '/chat';
   const ChatPage({super.key});
 
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  final _textController = TextEditingController();
+  final _focusNode = FocusNode();
+
+  bool _isWriting = false;
+
+  List<ChatMessage> _messages = [
+    ChatMessage(text: 'Hola mundo', uid: '123'),
+    ChatMessage(text: 'Hola mundo', uid: '123'),
+    ChatMessage(text: 'Hola mundo', uid: '123'),
+    ChatMessage(text: 'Hola mundo', uid: '123'),
+    ChatMessage(text: 'Hola mundo', uid: '123'),
+    ChatMessage(text: 'Hola mundo', uid: '123'),
+    ChatMessage(text: 'Hola mundo', uid: '123'),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,22 +57,77 @@ class ChatPage extends StatelessWidget {
           children: [
             Flexible(
               child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
                 reverse: true,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: const EdgeInsets.all(8),
-                    child: Text('This is a message $index'),
-                  );
-                },
+                physics: const BouncingScrollPhysics(),
+                itemCount: _messages.length,
+                itemBuilder: (context, index) => _messages[index],
               ),
             ),
             const Divider(height: 2),
-            Container(
-              color: Colors.white30,
-              height: 50,
-            )
+            _inputChat()
           ],
         ));
+  }
+
+  Widget _inputChat() {
+    return SafeArea(
+        child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: [
+          Flexible(
+            child: TextField(
+              controller: _textController,
+              focusNode: _focusNode,
+              onSubmitted: (_) {},
+              onChanged: (String text) {
+                setState(() {
+                  if (text.trim().isNotEmpty) {
+                    _isWriting = true;
+                  } else {
+                    _isWriting = false;
+                  }
+                });
+              },
+              decoration: const InputDecoration.collapsed(
+                hintText: 'Enviar mensaje',
+              ),
+            ),
+          ),
+          // Send button
+          Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Platform.isIOS
+                  ? CupertinoButton(
+                      onPressed: _isWriting
+                          ? () => _handleSubmit(_textController.text.trim())
+                          : null,
+                      child: const Text('Send'),
+                    )
+                  : Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: IconTheme(
+                        data: IconThemeData(color: Colors.blue[400]),
+                        child: IconButton(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          icon: const Icon(Icons.send),
+                          onPressed: _isWriting
+                              ? () => _handleSubmit(_textController.text.trim())
+                              : null,
+                        ),
+                      ),
+                    ))
+        ],
+      ),
+    ));
+  }
+
+  _handleSubmit(String text) {
+    _textController.clear();
+    _focusNode.requestFocus();
+    setState(() {
+      _isWriting = false;
+    });
   }
 }
