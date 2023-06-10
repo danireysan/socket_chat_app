@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:socket_chat_app/pages/login_page.dart';
+import 'package:socket_chat_app/pages/users_page.dart';
 import 'package:socket_chat_app/widgets/custom_textfield.dart';
 
+import '../helpers/mostrar_alerta.dart';
+import '../services/auth_service.dart';
 import '../widgets/blue_button_widget.dart';
 import '../widgets/label_widget.dart';
 import '../widgets/logo_widget.dart';
@@ -55,6 +59,7 @@ class _FormWidgetState extends State<_FormWidget> {
   final passwordCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -81,7 +86,27 @@ class _FormWidgetState extends State<_FormWidget> {
           ),
           BlueButton(
             text: "Ingresar",
-            onPressed: () {},
+            onPressed: authService.autenticando
+                ? null
+                : () async {
+                    FocusScope.of(context).unfocus();
+                    final registerOk = await authService.register(
+                      nameController.text.trim(),
+                      emailCtrl.text.trim(),
+                      passwordCtrl.text.trim(),
+                    );
+                    if (registerOk == true) {
+                      if (mounted) {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          UsersPage.routeName,
+                        );
+                      }
+                    } else {
+                      // Mostrar alerta
+                      mostrarAlerta(context, 'Registro incorrecto', registerOk);
+                    }
+                  },
           ),
         ],
       ),
